@@ -1,5 +1,7 @@
 venv/
 __pycache__/
-Results/
-*.pth
 *.pyc
+*.pth
+Results/
+dataset/
+.DS_Store
