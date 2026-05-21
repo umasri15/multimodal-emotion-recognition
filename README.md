@@ -1,197 +1,175 @@
-Multimodal Emotion Recognition using Speech, Text, and Fusion Learning
+# 🎭 Multimodal Emotion Recognition using Speech, Text, and Fusion Learning
 
-Multimodal Emotion Recognition is a Deep Learning based AI system that classifies human emotions using:
+Multimodal Emotion Recognition is a Deep Learning based AI system that classifies emotions using:
 
-🎙️ Speech-only learning
-📝 Text-only learning
-🔀 Multimodal Fusion learning
+- 🎙️ Speech-only learning
+- 📝 Text-only learning
+- 🔀 Multimodal Fusion learning
 
-The system combines emotional cues from audio signals and textual transcripts to improve emotion classification performance using deep neural architectures built with PyTorch and Transformers.
+The system combines emotional cues from audio signals and textual transcripts for improved emotion classification.
 
-The project was developed using the TESS (Toronto Emotional Speech Set) dataset and implements complete pipelines for:
+---
 
-Speech Emotion Recognition
-Text Emotion Recognition
-Multimodal Fusion-based Emotion Recognition
-Evaluation & Visualization
-🧠 Emotions Classified
+# 🗂️ Project Structure
 
-The system predicts the following emotions:
-
- Angry
- Disgust
- Fear
- Happy
- Neutral
- Sad
- Surprise
-
-
-🗂️ Project Structure
+```text
 📦 multimodal-emotion-recognition/
 │
-├── 📂 analysis/
-│   └── 📂 plots/
-│       ├── 📄 generate_visuals.py
-│       ├── 📄 generate_accuracy_table.py
-│       └── 📄 __init__.py
-│
-├── 📂 models/
-│   │
-│   ├── 📂 speech_pipeline/
-│   │   ├── 📄 dataset.py
-│   │   ├── 📄 feature_extraction.py
-│   │   ├── 📄 model.py
-│   │   ├── 📄 train.py
-│   │   └── 📄 test.py
-│   │
-│   ├── 📂 text_pipeline/
-│   │   ├── 📄 dataset.py
-│   │   ├── 📄 model.py
-│   │   ├── 📄 train.py
-│   │   └── 📄 test.py
-│   │
-│   └── 📂 fusion_pipeline/
-│       ├── 📄 model.py
-│       ├── 📄 train.py
-│       └── 📄 test.py
-│
-├── 📂 Results/
-│   │
-│   ├── 📂 plots/
-│   │   ├── 📄 pca_comparison.png
-│   │   ├── 📄 tsne_comparison.png
-│   │   ├── 📄 confusion_matrices.png
-│   │   └── 📄 model_accuracy_comparison.png
-│   │
-│   ├── 📂 tables/
-│   │   └── 📄 model_accuracy_table.png
-│   │
-│   ├── 📂 speech/
-│   │
-│   ├── 📂 text/
-│   │
-│   └── 📂 fusion/
-│
-├── 📂 utils/
-│   └── 📄 config.py
-│
-├── 📂 report/
-│
-├── 📄 requirements.txt
-├── 📄 README.md
-└── 📄 .gitignore
+├── analysis/
+├── models/
+├── Results/
+├── utils/
+├── README.md
+└── requirements.txt
+```
 
+---
 
-📦 Installation & Setup
-1️⃣ Clone Repository
+# 📦 Installation & Setup
+
+## 1️⃣ Clone Repository
+
+```bash
 git clone https://github.com/umasri15/Multimodal-Emotion-Recognition.git
 
 cd Multimodal-Emotion-Recognition
-2️⃣ Create Virtual Environment
+```
+
+---
+
+## 2️⃣ Create Virtual Environment
+
+```bash
 python -m venv venv
+```
 
-3️⃣ Activate Environment
-Windows
+---
+
+## 3️⃣ Activate Environment
+
+### Windows
+
+```bash
 venv\Scripts\activate
-Mac/Linux
+```
+
+### Mac/Linux
+
+```bash
 source venv/bin/activate
+```
 
-4️⃣ Install Dependencies
+---
+
+## 4️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
-🔧 Main Dependencies
-🧠 Deep Learning & NLP
-torch
-torchaudio
-transformers
-scikit-learn
-numpy
-pandas
-🎙️ Audio Processing
-librosa
-soundfile
-scipy
-📊 Visualization
-matplotlib
-seaborn
-📥 Dataset Setup
+```
 
-Download the TESS Dataset from Kaggle.
+---
 
-Dataset:
+# 🎙️ Speech Emotion Recognition
 
-Toronto Emotional Speech Set (TESS)
+## Train Speech Model
 
-Place dataset inside:
-
-dataset/TESS/
-
-The folder should contain all emotion subfolders with .wav audio files.
-
-🎙️ Speech Emotion Recognition Pipeline
-Feature Extraction
-
-Speech features are extracted using:
-
-MFCC (Mel Frequency Cepstral Coefficients)
-Temporal speech representations
-Audio normalization & silence trimming
-Train Speech Model
+```bash
 python -m models.speech_pipeline.train
-Test Speech Model
+```
+
+## Test Speech Model
+
+```bash
 python models/speech_pipeline/test.py
-📝 Text Emotion Recognition Pipeline
-Text Processing
+```
 
-Text transcripts are processed using:
+---
 
-Tokenization
-Contextual embeddings
-Transformer-based representations
+# 📝 Text Emotion Recognition
 
-The project uses:
+## Train Text Model
 
-BERT embeddings
-
-for contextual emotional understanding.
-
-Train Text Model
+```bash
 python -m models.text_pipeline.train
-Test Text Model
+```
+
+## Test Text Model
+
+```bash
 python models/text_pipeline/test.py
-🔀 Multimodal Fusion Pipeline
+```
 
-The fusion model combines:
+---
 
-Speech embeddings
-Text embeddings
+# 🔀 Fusion Emotion Recognition
 
-into a unified emotional representation for final classification.
+## Train Fusion Model
 
-Train Fusion Model
+```bash
 python -m models.fusion_pipeline.train
-Test Fusion Model
+```
+
+## Test Fusion Model
+
+```bash
 python models/fusion_pipeline/test.py
-📊 Visualization & Analysis
+```
 
-The project includes dimensionality reduction and evaluation visualizations for analyzing learned emotional representations.
+---
 
-📈 Generate PCA / t-SNE / Confusion Matrix Visualizations
+# 📊 Visualization & Analysis
+
+## Generate PCA / t-SNE / Confusion Matrix Plots
+
+```bash
 python -m analysis.plots.generate_visuals
+```
 
-Generated Outputs:
+## Generate Accuracy Table
 
-PCA cluster visualization
-t-SNE cluster visualization
-Confusion matrices
-Model comparison plots
-
-Saved inside:
-
-Results/plots/
-📋 Generate Accuracy Comparison Table
+```bash
 python -m analysis.plots.generate_accuracy_table
+```
 
-Output:
+---
 
-Results/tables/model_accuracy_table.png
+# 📈 Model Performance
+
+| Model | Accuracy |
+|---|---|
+| Speech-only | 93.14% |
+| Text-only | 91.80% |
+| Fusion Model | 96.50% |
+
+---
+
+# 📊 PCA Visualization
+
+![PCA](Results/plots/pca_comparison.png)
+
+---
+
+# 📊 t-SNE Visualization
+
+![TSNE](Results/plots/tsne_comparison.png)
+
+---
+
+# 📊 Confusion Matrices
+
+![Confusion](Results/plots/confusion_matrices.png)
+
+---
+
+# 🚀 Future Improvements
+
+- Real-time emotion recognition
+- Attention-based multimodal fusion
+- Transformer-based audio encoders
+- Video + Speech + Text fusion
+
+---
+
+# 🔗 GitHub Repository
+
+https://github.com/umasri15/Multimodal-Emotion-Recognition
