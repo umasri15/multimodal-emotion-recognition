@@ -1,18 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-# ==========================================
-# CREATE OUTPUT FOLDER
-# ==========================================
-
 os.makedirs("Results/tables", exist_ok=True)
-
-# ==========================================
-# MODEL RESULTS
-# ==========================================
-
 results = {
     "Model": [
         "Speech-only",
@@ -35,9 +24,6 @@ results = {
 
 df = pd.DataFrame(results)
 
-# ==========================================
-# CREATE TABLE FIGURE
-# ==========================================
 
 fig, ax = plt.subplots(figsize=(8, 2.5))
 
