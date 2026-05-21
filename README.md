@@ -1,12 +1,12 @@
-# 🎭 Multimodal Emotion Recognition using Speech, Text, and Fusion Learning
+# Multimodal Emotion Recognition using Speech, Text, and Fusion Learning
 
-Multimodal Emotion Recognition is a Deep Learning based AI system that classifies emotions using:
+A deep learning system that identifies emotions using three different approaches:
 
-- 🎙️ Speech-only learning
-- 📝 Text-only learning
-- 🔀 Multimodal Fusion learning
+- **Speech Analysis**: Classifies emotions from audio recordings alone
+- **Text Analysis**: Identifies emotions from written transcripts
+- **Multimodal Fusion**: Combines both audio and text for better accuracy
 
-The system combines emotional cues from audio signals and textual transcripts for improved emotion classification.
+The system works by analyzing emotional patterns in speech signals alongside the actual words being spoken, leading to more reliable emotion detection than using either source alone.
 
 ---
 
@@ -15,12 +15,57 @@ The system combines emotional cues from audio signals and textual transcripts fo
 ```text
 📦 multimodal-emotion-recognition/
 │
-├── analysis/
-├── models/
-├── Results/
-├── utils/
-├── README.md
-└── requirements.txt
+├── 📂 analysis/
+│   └── 📂 plots/
+│       ├── 📄 generate_visuals.py
+│       ├── 📄 generate_accuracy_table.py
+│       └── 📄 __init__.py
+│
+├── 📂 models/
+│   │
+│   ├── 📂 speech_pipeline/
+│   │   ├── 📄 dataset.py
+│   │   ├── 📄 feature_extraction.py
+│   │   ├── 📄 model.py
+│   │   ├── 📄 train.py
+│   │   └── 📄 test.py
+│   │
+│   ├── 📂 text_pipeline/
+│   │   ├── 📄 dataset.py
+│   │   ├── 📄 model.py
+│   │   ├── 📄 train.py
+│   │   └── 📄 test.py
+│   │
+│   └── 📂 fusion_pipeline/
+│       ├── 📄 model.py
+│       ├── 📄 train.py
+│       └── 📄 test.py
+│
+├── 📂 Results/
+│   │
+│   ├── 📂 plots/
+│   │   ├── 📄 pca_comparison.png
+│   │   ├── 📄 tsne_comparison.png
+│   │   ├── 📄 confusion_matrices.png
+│   │   └── 📄 model_accuracy_comparison.png
+│   │
+│   ├── 📂 tables/
+│   │   └── 📄 model_accuracy_table.png
+│   │
+│   ├── 📂 speech/
+│   │
+│   ├── 📂 text/
+│   │
+│   └── 📂 fusion/
+│
+├── 📂 utils/
+│   └── 📄 config.py
+│
+├── 📂 report/
+│
+├── 📄 requirements.txt
+├── 📄 README.md
+└── 📄 .gitignore
 ```
 
 ---
@@ -143,12 +188,6 @@ python -m analysis.plots.generate_accuracy_table
 
 ---
 
-# 📊 PCA Visualization
-
-![PCA](Results/plots/pca_comparison.png)
-
----
-
 # 📊 t-SNE Visualization
 
 ![TSNE](Results/plots/tsne_comparison.png)
@@ -161,15 +200,14 @@ python -m analysis.plots.generate_accuracy_table
 
 ---
 
-# 🚀 Future Improvements
-
-- Real-time emotion recognition
-- Attention-based multimodal fusion
-- Transformer-based audio encoders
-- Video + Speech + Text fusion
-
----
-
 # 🔗 GitHub Repository
 
 https://github.com/umasri15/Multimodal-Emotion-Recognition
+
+Important Note on GitHub & Project Files (Multimodal Emotion Recognition System)
+
+The GitHub repository contains the complete source code for the Multimodal Emotion Recognition system, including speech, text, and fusion pipelines along with all training and evaluation scripts. Due to size constraints, large files such as datasets (TESS and other corpora), extracted features (MFCC/embeddings), and trained model checkpoints are not included in the repository.
+
+For full reproducibility, a Google Drive link is provided containing the complete datasets, extracted features, trained models, and all experimental outputs.
+
+The GitHub repo is lightweight and intended for easy setup and code review, while the Drive folder provides the complete working environment for training and evaluation.
