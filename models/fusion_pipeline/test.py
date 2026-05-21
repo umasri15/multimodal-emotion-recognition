@@ -9,7 +9,6 @@ from utils.config import BASE_DIR
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ---------------- LOAD MODELS ----------------
 speech_model = SpeechEmotionModel().to(device)
 speech_model.load_state_dict(torch.load(
     os.path.join(BASE_DIR, "Results", "speech", "speech_model.pth"),
@@ -49,7 +48,6 @@ enc = tokenizer(
 input_ids = enc["input_ids"].to(device)
 attention_mask = enc["attention_mask"].to(device)
 
-# ---------------- FORWARD ----------------
 with torch.no_grad():
 
     speech_out = speech_model(speech_input)
@@ -60,3 +58,4 @@ with torch.no_grad():
     pred = torch.argmax(output, dim=1)
 
 print("Fusion Prediction:", pred.item())
+

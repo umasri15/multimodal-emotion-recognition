@@ -13,7 +13,6 @@ from models.speech_pipeline.model import SpeechEmotionModel
 from models.text_pipeline.model import TextEmotionModel
 from models.fusion_pipeline.model import FusionModel
 
-# -----------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Device:", device)
 
@@ -26,9 +25,6 @@ text_dataset = TextEmotionDataset(DATASET_PATH)
 speech_loader = DataLoader(speech_dataset, batch_size=BATCH_SIZE, shuffle=True)
 text_loader = DataLoader(text_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
-# -----------------------
-# LOAD MODELS
-# -----------------------
 speech_model = SpeechEmotionModel().to(device)
 speech_model.load_state_dict(torch.load(
     os.path.join(BASE_DIR, "Results/speech/speech_model.pth"),
@@ -48,9 +44,6 @@ fusion_model = FusionModel().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(fusion_model.parameters(), lr=1e-4)
 
-# -----------------------
-# TRAINING
-# -----------------------
 EPOCHS = 5
 
 print("Training Fusion Model...")
@@ -73,8 +66,7 @@ for epoch in range(EPOCHS):
             speech_out = speech_model(speech_x)
             text_out = text_model(input_ids, attention_mask)
 
-        # DEBUG (optional)
-        # print(speech_out.shape, text_out.shape)
+    
 
         outputs = fusion_model(speech_out, text_out)
 
@@ -94,9 +86,6 @@ for epoch in range(EPOCHS):
 
     print(f"Epoch {epoch+1}: Loss {total_loss:.4f} Acc {acc:.2f}%")
 
-# -----------------------
-# SAVE
-# -----------------------
 save_path = os.path.join(BASE_DIR, "Results", "fusion")
 os.makedirs(save_path, exist_ok=True)
 

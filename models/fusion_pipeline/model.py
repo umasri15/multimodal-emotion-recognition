@@ -23,3 +23,5 @@ class FusionModel(nn.Module):
         x = self.dropout(x)
         x = self.fc2(x)
         return x
+    
+    #Fusion model
