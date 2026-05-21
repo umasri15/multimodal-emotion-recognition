@@ -1,7 +1,15 @@
+# Virtual environment
 venv/
+
+# Python cache
 __pycache__/
 *.pyc
-*.pth
-Results/
+
+# Dataset
 dataset/
+
+# Trained models
+*.pth
+
+# OS files
 .DS_Store
