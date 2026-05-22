@@ -11,7 +11,6 @@ The system works by analyzing emotional patterns in speech signals alongside the
 ---
 
 # 🗂️ Project Structure
-
 ```text
 📦 multimodal-emotion-recognition/
 │
@@ -19,6 +18,7 @@ The system works by analyzing emotional patterns in speech signals alongside the
 │   └── 📂 plots/
 │       ├── 📄 generate_visuals.py
 │       ├── 📄 generate_accuracy_table.py
+│       ├── 📄 run_tsne.py
 │       └── 📄 __init__.py
 │
 ├── 📂 models/
@@ -44,8 +44,9 @@ The system works by analyzing emotional patterns in speech signals alongside the
 ├── 📂 Results/
 │   │
 │   ├── 📂 plots/
-│   │   ├── 📄 pca_comparison.png
-│   │   ├── 📄 tsne_comparison.png
+│   │   ├── 📄 speech_tsne.png
+│   │   ├── 📄 text_tsne.png
+│   │   ├── 📄 fusion_tsne.png
 │   │   ├── 📄 confusion_matrices.png
 │   │   └── 📄 model_accuracy_comparison.png
 │   │
