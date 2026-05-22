@@ -26,24 +26,11 @@ from models.text_pipeline.dataset import TextEmotionDataset
 from models.speech_pipeline.model import SpeechEmotionModel
 from models.text_pipeline.model import TextEmotionModel
 from models.fusion_pipeline.model import FusionModel
-
-
-# =====================================================
-# DEVICE
-# =====================================================
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# =====================================================
-# OUTPUT FOLDER
-# =====================================================
 
 plots_dir = os.path.join(BASE_DIR, "Results", "plots")
 os.makedirs(plots_dir, exist_ok=True)
-
-# =====================================================
-# DATASET
-# =====================================================
 
 dataset_path = os.path.join(BASE_DIR, "dataset", "TESS")
 
@@ -62,9 +49,6 @@ text_loader = DataLoader(
     shuffle=False
 )
 
-# =====================================================
-# LOAD MODELS
-# =====================================================
 
 speech_model = SpeechEmotionModel().to(device)
 
@@ -116,10 +100,6 @@ fusion_model.eval()
 
 print("Models loaded successfully ✔")
 
-# =====================================================
-# STORAGE
-# =====================================================
-
 all_labels = []
 
 speech_preds = []
@@ -132,14 +112,9 @@ emotion_names = [
     "Fear",
     "Happy",
     "Neutral",
-    "Pleasant Surprise",
+    "Surprise",
     "Sad"
 ]
-
-# =====================================================
-# INFERENCE
-# =====================================================
-
 with torch.no_grad():
 
     for (speech_x, labels), text_batch in zip(
@@ -153,9 +128,6 @@ with torch.no_grad():
         input_ids = text_batch["input_ids"].to(device)
         attention_mask = text_batch["attention_mask"].to(device)
 
-        # =================================================
-        # SPEECH MODEL
-        # =================================================
 
         speech_outputs = speech_model(speech_x)
 
@@ -173,9 +145,6 @@ with torch.no_grad():
             dim=1
         )
 
-        # =================================================
-        # TEXT MODEL
-        # =================================================
 
         text_outputs = text_model(
             input_ids,
@@ -187,10 +156,6 @@ with torch.no_grad():
             dim=1
         )
 
-        # =================================================
-        # FUSION MODEL
-        # =================================================
-
         fusion_outputs = fusion_model(
             speech_outputs,
             text_outputs
@@ -201,9 +166,6 @@ with torch.no_grad():
             dim=1
         )
 
-        # =================================================
-        # SAVE
-        # =================================================
 
         all_labels.extend(
             labels.cpu().numpy()
@@ -221,19 +183,12 @@ with torch.no_grad():
             fusion_pred.cpu().numpy()
         )
 
-# =====================================================
-# CONFUSION MATRICES
-# =====================================================
-
 fig, axes = plt.subplots(
     1,
     3,
     figsize=(20, 6)
 )
 
-# =====================================================
-# SPEECH CM
-# =====================================================
 
 cm_speech = confusion_matrix(
     all_labels,
@@ -257,9 +212,6 @@ axes[0].set_title(
 axes[0].set_xlabel("Predicted")
 axes[0].set_ylabel("Actual")
 
-# =====================================================
-# TEXT CM
-# =====================================================
 
 cm_text = confusion_matrix(
     all_labels,
@@ -283,9 +235,6 @@ axes[1].set_title(
 axes[1].set_xlabel("Predicted")
 axes[1].set_ylabel("Actual")
 
-# =====================================================
-# FUSION CM
-# =====================================================
 
 cm_fusion = confusion_matrix(
     all_labels,
@@ -309,9 +258,6 @@ axes[2].set_title(
 axes[2].set_xlabel("Predicted")
 axes[2].set_ylabel("Actual")
 
-# =====================================================
-# SAVE FIGURE
-# =====================================================
 
 plt.tight_layout()
 

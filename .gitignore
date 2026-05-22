@@ -13,3 +13,7 @@ dataset/
 
 # OS files
 .DS_Store
+
+
+# Embeddings
+Results/embeddings/

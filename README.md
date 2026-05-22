@@ -17,6 +17,7 @@ The system works by analyzing emotional patterns in speech signals alongside the
 ├── 📂 analysis/
 │   └── 📂 plots/
 │       ├── 📄 generate_visuals.py
+        ├── 📄 save_embeddings.py
 │       ├── 📄 generate_accuracy_table.py
 │       ├── 📄 run_tsne.py
 │       └── 📄 __init__.py
