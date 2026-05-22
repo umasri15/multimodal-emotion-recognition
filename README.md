@@ -161,44 +161,40 @@ python models/fusion_pipeline/test.py
 ```
 
 ---
+## 📊 Visualizations & Analysis
 
-# 📊 Visualization & Analysis
+### t-SNE Embeddings
 
-## Generate PCA / t-SNE / Confusion Matrix Plots
+#### Speech Embeddings
+![Speech t-SNE](Results/plots/speech_tsne.png)
 
-```bash
-python -m analysis.plots.generate_visuals
-```
+#### Text Embeddings
+![Text t-SNE](Results/plots/text_tsne.png)
 
-## Generate Accuracy Table
-
-```bash
-python -m analysis.plots.generate_accuracy_table
-```
+#### Fusion Embeddings
+![Fusion t-SNE](Results/plots/fusion_tsne.png)
 
 ---
 
-# 📈 Model Performance
+### Confusion Matrices
 
-| Model | Accuracy |
-|---|---|
-| Speech-only | 93.14% |
-| Text-only | 91.80% |
-| Fusion Model | 96.50% |
+![Confusion Matrices](Results/plots/confusion_matrices.png)
 
 ---
 
-# 📊 t-SNE Visualization
+## 📈 Model Performance
 
-![TSNE](Results/plots/tsne_comparison.png)
-
----
-
-# 📊 Confusion Matrices
-
-![Confusion](Results/plots/confusion_matrices.png)
+| Model | Accuracy | Input Type |
+|---|---|---|
+| Speech-only | 93.14% | MFCC Features |
+| Text-only | 91.80% | BERT Embeddings |
+| Fusion Model | 96.50% | Speech + Text |
 
 ---
+
+### Performance Table
+
+![Performance Table](Results/tables/model_accuracy_table.png)
 
 # 🔗 GitHub Repository
 
