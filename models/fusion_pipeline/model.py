@@ -24,4 +24,7 @@ class FusionModel(nn.Module):
         x = self.fc2(x)
         return x
     
-    #Fusion model
+    #Fusion model that takes in the outputs of the speech and text models, concatenates them, and passes through a simple feedforward network to produce the final emotion prediction.
+
+
+    

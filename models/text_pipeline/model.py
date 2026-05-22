@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from transformers import BertModel
 
+
 class TextEmotionModel(nn.Module):
 
     def __init__(self, num_classes=7):
@@ -19,7 +20,7 @@ class TextEmotionModel(nn.Module):
             nn.Linear(256, num_classes)
         )
 
-    def forward(self, input_ids, attention_mask):
+    def forward(self, input_ids, attention_mask, return_embedding=False):
 
         out = self.bert(
             input_ids=input_ids,
@@ -27,4 +28,10 @@ class TextEmotionModel(nn.Module):
         )
 
         x = out.pooler_output
-        return self.classifier(x)
+
+        logits = self.classifier(x)
+
+        if return_embedding:
+            return x  # raw BERT embedding for t-SNE
+
+        return logits

@@ -13,7 +13,6 @@ model.load_state_dict(torch.load(
 ))
 model.eval()
 
-# ✅ FIX: force correct shape ALWAYS
 speech_input = torch.randn(1, 168).float().to(device)
 
 with torch.no_grad():

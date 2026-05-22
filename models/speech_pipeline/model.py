@@ -22,11 +22,10 @@ class SpeechEmotionModel(nn.Module):
     def forward(self, x):
         x = x.float()
 
-        # 🔥 FORCE CORRECT SHAPE
         if len(x.shape) == 1:
             x = x.unsqueeze(0)
 
         if x.shape[1] != 168:
-            x = x[:, :168]  # safety crop OR fix mismatch
+            x = x[:, :168]
 
         return self.net(x)

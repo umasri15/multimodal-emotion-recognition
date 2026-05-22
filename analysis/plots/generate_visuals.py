@@ -1,33 +1,130 @@
+import sys
 import os
+
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../.."
+        )
+    )
+)
+
+import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.manifold import TSNE
-from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix
+from torch.utils.data import DataLoader
+
+from utils.config import BASE_DIR, BATCH_SIZE
+
+from models.speech_pipeline.dataset import TESSDataset
+from models.text_pipeline.dataset import TextEmotionDataset
+
+from models.speech_pipeline.model import SpeechEmotionModel
+from models.text_pipeline.model import TextEmotionModel
+from models.fusion_pipeline.model import FusionModel
 
 
 # =====================================================
-# CREATE OUTPUT FOLDER
+# DEVICE
 # =====================================================
 
-os.makedirs("Results/plots", exist_ok=True)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # =====================================================
-# FAKE EMBEDDINGS
-# (replace later with real embeddings)
+# OUTPUT FOLDER
 # =====================================================
 
-N = 1200
+plots_dir = os.path.join(BASE_DIR, "Results", "plots")
+os.makedirs(plots_dir, exist_ok=True)
 
-speech_feat = np.random.randn(N, 168)
+# =====================================================
+# DATASET
+# =====================================================
 
-text_feat = np.random.randn(N, 768)
+dataset_path = os.path.join(BASE_DIR, "dataset", "TESS")
 
-fusion_feat = np.random.randn(N, 256)
+speech_dataset = TESSDataset(dataset_path)
+text_dataset = TextEmotionDataset(dataset_path)
 
-labels = np.random.randint(0, 7, N)
+speech_loader = DataLoader(
+    speech_dataset,
+    batch_size=BATCH_SIZE,
+    shuffle=False
+)
+
+text_loader = DataLoader(
+    text_dataset,
+    batch_size=BATCH_SIZE,
+    shuffle=False
+)
+
+# =====================================================
+# LOAD MODELS
+# =====================================================
+
+speech_model = SpeechEmotionModel().to(device)
+
+speech_model.load_state_dict(
+    torch.load(
+        os.path.join(
+            BASE_DIR,
+            "Results",
+            "speech",
+            "speech_model.pth"
+        ),
+        map_location=device
+    )
+)
+
+speech_model.eval()
+
+text_model = TextEmotionModel().to(device)
+
+text_model.load_state_dict(
+    torch.load(
+        os.path.join(
+            BASE_DIR,
+            "Results",
+            "text",
+            "text_best_model.pth"
+        ),
+        map_location=device
+    )
+)
+
+text_model.eval()
+
+fusion_model = FusionModel().to(device)
+
+fusion_model.load_state_dict(
+    torch.load(
+        os.path.join(
+            BASE_DIR,
+            "Results",
+            "fusion",
+            "fusion_model.pth"
+        ),
+        map_location=device
+    )
+)
+
+fusion_model.eval()
+
+print("Models loaded successfully ✔")
+
+# =====================================================
+# STORAGE
+# =====================================================
+
+all_labels = []
+
+speech_preds = []
+text_preds = []
+fusion_preds = []
 
 emotion_names = [
     "Angry",
@@ -35,160 +132,113 @@ emotion_names = [
     "Fear",
     "Happy",
     "Neutral",
-    "Pleasant",
+    "Pleasant Surprise",
     "Sad"
 ]
 
 # =====================================================
-# t-SNE VISUALIZATION
+# INFERENCE
 # =====================================================
 
-speech_tsne = TSNE(
-    n_components=2,
-    perplexity=30,
-    random_state=42
-).fit_transform(speech_feat)
+with torch.no_grad():
 
-text_tsne = TSNE(
-    n_components=2,
-    perplexity=30,
-    random_state=42
-).fit_transform(text_feat)
+    for (speech_x, labels), text_batch in zip(
+        speech_loader,
+        text_loader
+    ):
 
-fusion_tsne = TSNE(
-    n_components=2,
-    perplexity=30,
-    random_state=42
-).fit_transform(fusion_feat)
+        speech_x = speech_x.to(device)
+        labels = labels.to(device)
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 8))
+        input_ids = text_batch["input_ids"].to(device)
+        attention_mask = text_batch["attention_mask"].to(device)
 
-# Speech
-axes[0].scatter(
-    speech_tsne[:, 0],
-    speech_tsne[:, 1],
-    c=labels,
-    s=12
-)
+        # =================================================
+        # SPEECH MODEL
+        # =================================================
 
-axes[0].set_title("Speech Embeddings (t-SNE)")
-axes[0].set_xlabel("t-SNE-1")
-axes[0].set_ylabel("t-SNE-2")
+        speech_outputs = speech_model(speech_x)
 
-# Text
-axes[1].scatter(
-    text_tsne[:, 0],
-    text_tsne[:, 1],
-    c=labels,
-    s=12
-)
+        # FIX 3D -> 2D
+        if len(speech_outputs.shape) > 2:
+            speech_outputs = speech_outputs.mean(dim=1)
 
-axes[1].set_title("Text Embeddings (t-SNE)")
-axes[1].set_xlabel("t-SNE-1")
-axes[1].set_ylabel("t-SNE-2")
+        speech_outputs = speech_outputs.view(
+            speech_outputs.size(0),
+            -1
+        )
 
-# Fusion
-axes[2].scatter(
-    fusion_tsne[:, 0],
-    fusion_tsne[:, 1],
-    c=labels,
-    s=12
-)
+        speech_pred = torch.argmax(
+            speech_outputs,
+            dim=1
+        )
 
-axes[2].set_title("Fusion Embeddings (t-SNE)")
-axes[2].set_xlabel("t-SNE-1")
-axes[2].set_ylabel("t-SNE-2")
+        # =================================================
+        # TEXT MODEL
+        # =================================================
 
-plt.tight_layout()
+        text_outputs = text_model(
+            input_ids,
+            attention_mask
+        )
 
-plt.savefig(
-    "Results/plots/tsne_comparison.png",
-    dpi=300
-)
+        text_pred = torch.argmax(
+            text_outputs,
+            dim=1
+        )
 
-plt.close()
+        # =================================================
+        # FUSION MODEL
+        # =================================================
 
-print("[INFO] t-SNE plot saved.")
+        fusion_outputs = fusion_model(
+            speech_outputs,
+            text_outputs
+        )
 
-# =====================================================
-# PCA VISUALIZATION
-# =====================================================
+        fusion_pred = torch.argmax(
+            fusion_outputs,
+            dim=1
+        )
 
-speech_pca = PCA(n_components=2).fit_transform(speech_feat)
+        # =================================================
+        # SAVE
+        # =================================================
 
-text_pca = PCA(n_components=2).fit_transform(text_feat)
+        all_labels.extend(
+            labels.cpu().numpy()
+        )
 
-fusion_pca = PCA(n_components=2).fit_transform(fusion_feat)
+        speech_preds.extend(
+            speech_pred.cpu().numpy()
+        )
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 8))
+        text_preds.extend(
+            text_pred.cpu().numpy()
+        )
 
-# Speech
-axes[0].scatter(
-    speech_pca[:, 0],
-    speech_pca[:, 1],
-    c=labels,
-    s=12
-)
-
-axes[0].set_title("Temporal Modelling (Speech)")
-axes[0].set_xlabel("PCA-1")
-axes[0].set_ylabel("PCA-2")
-
-# Text
-axes[1].scatter(
-    text_pca[:, 0],
-    text_pca[:, 1],
-    c=labels,
-    s=12
-)
-
-axes[1].set_title("Contextual Modelling (Text)")
-axes[1].set_xlabel("PCA-1")
-axes[1].set_ylabel("PCA-2")
-
-# Fusion
-axes[2].scatter(
-    fusion_pca[:, 0],
-    fusion_pca[:, 1],
-    c=labels,
-    s=12
-)
-
-axes[2].set_title("Fusion Representation")
-axes[2].set_xlabel("PCA-1")
-axes[2].set_ylabel("PCA-2")
-
-plt.tight_layout()
-
-plt.savefig(
-    "Results/plots/pca_comparison.png",
-    dpi=300
-)
-
-plt.close()
-
-print("[INFO] PCA plot saved.")
+        fusion_preds.extend(
+            fusion_pred.cpu().numpy()
+        )
 
 # =====================================================
 # CONFUSION MATRICES
 # =====================================================
 
-speech_pred = labels.copy()
-text_pred = labels.copy()
-fusion_pred = labels.copy()
+fig, axes = plt.subplots(
+    1,
+    3,
+    figsize=(20, 6)
+)
 
-# Add fake mistakes
+# =====================================================
+# SPEECH CM
+# =====================================================
 
-speech_pred[:120] = np.random.randint(0, 7, 120)
-
-text_pred[:180] = np.random.randint(0, 7, 180)
-
-fusion_pred[:60] = np.random.randint(0, 7, 60)
-
-fig, axes = plt.subplots(1, 3, figsize=(20, 6))
-
-# Speech CM
-cm_speech = confusion_matrix(labels, speech_pred)
+cm_speech = confusion_matrix(
+    all_labels,
+    speech_preds
+)
 
 sns.heatmap(
     cm_speech,
@@ -200,12 +250,21 @@ sns.heatmap(
     ax=axes[0]
 )
 
-axes[0].set_title("Speech Model Confusion Matrix")
+axes[0].set_title(
+    "Speech Model Confusion Matrix"
+)
+
 axes[0].set_xlabel("Predicted")
 axes[0].set_ylabel("Actual")
 
-# Text CM
-cm_text = confusion_matrix(labels, text_pred)
+# =====================================================
+# TEXT CM
+# =====================================================
+
+cm_text = confusion_matrix(
+    all_labels,
+    text_preds
+)
 
 sns.heatmap(
     cm_text,
@@ -217,12 +276,21 @@ sns.heatmap(
     ax=axes[1]
 )
 
-axes[1].set_title("Text Model Confusion Matrix")
+axes[1].set_title(
+    "Text Model Confusion Matrix"
+)
+
 axes[1].set_xlabel("Predicted")
 axes[1].set_ylabel("Actual")
 
-# Fusion CM
-cm_fusion = confusion_matrix(labels, fusion_pred)
+# =====================================================
+# FUSION CM
+# =====================================================
+
+cm_fusion = confusion_matrix(
+    all_labels,
+    fusion_preds
+)
 
 sns.heatmap(
     cm_fusion,
@@ -234,19 +302,31 @@ sns.heatmap(
     ax=axes[2]
 )
 
-axes[2].set_title("Fusion Model Confusion Matrix")
+axes[2].set_title(
+    "Fusion Model Confusion Matrix"
+)
+
 axes[2].set_xlabel("Predicted")
 axes[2].set_ylabel("Actual")
 
+# =====================================================
+# SAVE FIGURE
+# =====================================================
+
 plt.tight_layout()
 
+save_path = os.path.join(
+    plots_dir,
+    "confusion_matrices.png"
+)
+
 plt.savefig(
-    "Results/plots/confusion_matrices.png",
-    dpi=300
+    save_path,
+    dpi=300,
+    bbox_inches="tight"
 )
 
 plt.close()
 
-print("[INFO] Confusion matrices saved.")
-
+print(f"[INFO] Saved: {save_path}")
 print("\nALL VISUALS GENERATED SUCCESSFULLY.")
