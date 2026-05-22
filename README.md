@@ -155,6 +155,13 @@ python models/text_pipeline/test.py
 ```bash
 python -m models.fusion_pipeline.train
 ```
+### Extract and Save Embeddings
+
+This step extracts intermediate speech, text, and fusion embeddings from the trained models and stores them as `.npy` files.
+
+```bash
+python analysis/plots/save_embeddings.py
+```
 
 ## Test Fusion Model
 
