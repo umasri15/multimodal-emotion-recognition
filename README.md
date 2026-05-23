@@ -60,10 +60,12 @@ Dataset link: https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-se
 │   └── 📂 fusion/
 │
 ├── 📂 utils/
-    └── 📄 path.py
+│   └── 📄 path.py
 │   └── 📄 config.py
 │
-├── 📂 report/
+├── 📄 predict_speech.py     → Speech-only emotion prediction
+├── 📄 predict_text.py       → Text-only emotion prediction
+├── 📄 predict_fusion.py     → Combined speech + text prediction
 │
 ├── 📄 requirements.txt
 ├── 📄 README.md
@@ -168,7 +170,44 @@ python analysis/plots/save_embeddings.py
 ```bash
 python models/fusion_pipeline/test.py
 ```
+---
 
+# 🎧 Speech Emotion Prediction (Inference)
+
+```bash
+python predict_speech.py <path_to_audio_file.wav>
+```
+
+### Example:
+```bash
+python predict_speech.py dataset/TESS/OAF_Happy/OAF_back_happy.wav
+```
+
+---
+
+# 📝 Text Emotion Prediction (Inference)
+
+```bash
+python predict_text.py "<text_input>"
+```
+
+### Example:
+```bash
+python predict_text.py "I am very happy today"
+```
+
+---
+
+# 🔀 Multimodal Fusion Prediction (Speech + Text)
+
+```bash
+python predict_fusion.py <path_to_audio_file.wav> "<text_input>"
+```
+
+### Example:
+```bash
+python predict_fusion.py dataset/TESS/OAF_Fear/OAF_bar_fear.wav "I am very scared"
+```
 ---
 ## 📊 Visualizations & Analysis
 
@@ -195,6 +234,36 @@ python models/fusion_pipeline/test.py
 
 ![Performance Table](Results/tables/model_accuracy_table.png)
 
+# ⚠️ Important Notes 
+
+---
+
+## 📌 3. Correct Way to Run Python Modules
+
+For training and testing pipelines, always use:
+
+```bash
+python -m models.speech_pipeline.train
+python -m models.text_pipeline.train
+python -m models.fusion_pipeline.train
+```
+
+❗ This ensures Python treats folders as packages and avoids import errors.
+
+---
+
+## 📌 5. Input Format Rules for Prediction
+
+### 🎧 Speech Prediction
+- Input: `.wav` audio file path only
+
+### 📝 Text Prediction
+- Input: sentence inside quotes `" "`
+
+### 🔀 Fusion Prediction
+- Input: both audio file path + text sentence
+
+---
 # 🔗 GitHub Repository
 
 https://github.com/umasri15/Multimodal-Emotion-Recognition
