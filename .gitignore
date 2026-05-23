@@ -1,19 +1,8 @@
-# Virtual environment
-venv/
 
-# Python cache
+venv/
 __pycache__/
 *.pyc
-
-# Dataset
 dataset/
-
-# Trained models
 *.pth
-
-# OS files
 .DS_Store
-
-
-# Embeddings
 Results/embeddings/
