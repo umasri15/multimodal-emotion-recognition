@@ -1,12 +1,11 @@
 # Multimodal Emotion Recognition using Speech, Text, and Fusion Learning
 
-A deep learning system that identifies emotions using three different approaches:
-
 - **Speech Analysis**: Classifies emotions from audio recordings alone
 - **Text Analysis**: Identifies emotions from written transcripts
 - **Multimodal Fusion**: Combines both audio and text for better accuracy
 
-The system works by analyzing emotional patterns in speech signals alongside the actual words being spoken, leading to more reliable emotion detection than using either source alone.
+The model was trained on the Toronto Emotional Speech Set (TESS), a publicly available dataset containing emotionally labeled speech samples across seven emotion classes.
+Dataset link: https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess
 
 ---
 
@@ -189,16 +188,6 @@ python models/fusion_pipeline/test.py
 ### Confusion Matrices
 
 ![Confusion Matrices](Results/plots/confusion_matrices.png)
-
----
-
-## 📈 Model Performance
-
-| Model | Accuracy | Input Type |
-|---|---|---|
-| Speech-only | 93.14% | MFCC Features |
-| Text-only | 91.80% | BERT Embeddings |
-| Fusion Model | 96.50% | Speech + Text |
 
 ---
 
