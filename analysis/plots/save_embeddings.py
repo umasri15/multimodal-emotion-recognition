@@ -26,9 +26,6 @@ from models.text_pipeline.model import TextEmotionModel
 from models.fusion_pipeline.model import FusionModel
 
 
-# =====================================================
-# DEVICE
-# =====================================================
 
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -36,9 +33,7 @@ device = torch.device(
 
 print("Using device:", device)
 
-# =====================================================
-# SAVE FOLDER
-# =====================================================
+
 
 save_dir = os.path.join(
     BASE_DIR,
@@ -51,9 +46,6 @@ os.makedirs(
     exist_ok=True
 )
 
-# =====================================================
-# DATASET
-# =====================================================
 
 dataset_path = os.path.join(
     BASE_DIR,
@@ -77,9 +69,6 @@ text_loader = DataLoader(
     shuffle=False
 )
 
-# =====================================================
-# LOAD MODELS
-# =====================================================
 
 speech_model = SpeechEmotionModel().to(device)
 
@@ -131,9 +120,7 @@ fusion_model.eval()
 
 print("Models loaded successfully ✔")
 
-# =====================================================
-# STORAGE
-# =====================================================
+
 
 speech_embeddings = []
 text_embeddings = []
@@ -141,9 +128,7 @@ fusion_embeddings = []
 
 all_labels = []
 
-# =====================================================
-# EXTRACT EMBEDDINGS
-# =====================================================
+
 
 with torch.no_grad():
 
@@ -162,9 +147,7 @@ with torch.no_grad():
 
         labels = labels.to(device)
 
-        # =================================================
-        # SPEECH EMBEDDINGS
-        # =================================================
+       
 
         speech_outputs = speech_model(
             speech_x
@@ -178,27 +161,19 @@ with torch.no_grad():
             -1
         )
 
-        # =================================================
-        # TEXT EMBEDDINGS
-        # =================================================
 
         text_outputs = text_model(
             input_ids,
             attention_mask
         )
 
-        # =================================================
-        # FUSION EMBEDDINGS
-        # =================================================
-
+        
         fusion_outputs = fusion_model(
             speech_outputs,
             text_outputs
         )
 
-        # =================================================
-        # STORE
-        # =================================================
+
 
         speech_embeddings.append(
             speech_outputs.cpu().numpy()
@@ -216,9 +191,7 @@ with torch.no_grad():
             labels.cpu().numpy()
         )
 
-# =====================================================
-# CONCATENATE
-# =====================================================
+
 
 speech_embeddings = np.concatenate(
     speech_embeddings,
@@ -240,9 +213,6 @@ all_labels = np.concatenate(
     axis=0
 )
 
-# =====================================================
-# SAVE
-# =====================================================
 
 np.save(
     os.path.join(
