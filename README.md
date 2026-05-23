@@ -238,7 +238,7 @@ python predict_fusion.py dataset/TESS/OAF_Fear/OAF_bar_fear.wav "I am very scare
 
 ---
 
-## 📌 3. Correct Way to Run Python Modules
+##  Correct Way to Run Python Modules
 
 For training and testing pipelines, always use:
 
@@ -252,15 +252,15 @@ python -m models.fusion_pipeline.train
 
 ---
 
-## 📌 5. Input Format Rules for Prediction
+##  Input Format Rules for Prediction
 
-### 🎧 Speech Prediction
+###  Speech Prediction
 - Input: `.wav` audio file path only
 
-### 📝 Text Prediction
+###  Text Prediction
 - Input: sentence inside quotes `" "`
 
-### 🔀 Fusion Prediction
+### Fusion Prediction
 - Input: both audio file path + text sentence
 
 ---
