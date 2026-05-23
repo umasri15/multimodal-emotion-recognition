@@ -59,9 +59,6 @@ def extract_features(file_path):
     return torch.tensor(features, dtype=torch.float32).unsqueeze(0).to(device)
 
 
-# -----------------------
-# RUN PREDICTION
-# -----------------------
 if len(sys.argv) < 2:
     print("Usage: python predict_speech.py <path_to_wav>")
     sys.exit()

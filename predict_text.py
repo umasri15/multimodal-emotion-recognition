@@ -6,7 +6,6 @@ from models.text_pipeline.model import TextEmotionModel
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Label mapping (same order as training)
 emotion_labels = [
     "angry",
     "disgust",

@@ -37,9 +37,7 @@ fusion_model.eval()
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
-# -----------------------
-# Speech feature extraction (same as speech script)
-# -----------------------
+
 def extract_features(file_path):
     audio, sr = librosa.load(file_path, sr=SAMPLE_RATE)
 
@@ -63,9 +61,7 @@ def extract_features(file_path):
 
     return torch.tensor(features, dtype=torch.float32).unsqueeze(0).to(device)
 
-# -----------------------
-# Inputs
-# -----------------------
+
 if len(sys.argv) < 3:
     print("Usage: python predict_fusion.py <audio_path> <text>")
     sys.exit()
@@ -73,9 +69,6 @@ if len(sys.argv) < 3:
 audio_path = sys.argv[1]
 text_input = sys.argv[2]
 
-# -----------------------
-# Prediction
-# -----------------------
 with torch.no_grad():
 
     speech_x = extract_features(audio_path)
