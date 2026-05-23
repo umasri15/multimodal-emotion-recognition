@@ -58,4 +58,3 @@ with torch.no_grad():
     pred = torch.argmax(output, dim=1)
 
 print("Fusion Prediction:", pred.item())
-
