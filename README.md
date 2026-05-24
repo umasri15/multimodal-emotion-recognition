@@ -5,7 +5,14 @@
 - **Multimodal Fusion**: Combines both audio and text for better accuracy
 
 The model was trained on the Toronto Emotional Speech Set (TESS), a publicly available dataset containing emotionally labeled speech samples across seven emotion classes.
+
+Download the TESS dataset from:
 Dataset link: https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess
+
+Place the dataset inside(unzipped):
+dataset/TESS/ 
+
+ensure `DATASET\_PATH` points to your folder.
 
 ---
 
