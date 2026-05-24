@@ -270,8 +270,11 @@ https://github.com/umasri15/Multimodal-Emotion-Recognition
 
 Important Note on GitHub & Project Files (Multimodal Emotion Recognition System)
 
-The GitHub repository contains the complete source code for the Multimodal Emotion Recognition system, including speech, text, and fusion pipelines along with all training and evaluation scripts. Due to size constraints, large files such as datasets (TESS and other corpora), extracted features (MFCC/embeddings), and trained model checkpoints are not included in the repository.
+The GitHub repository contains the complete source code for the Multimodal Emotion Recognition system, including speech, text, and fusion pipelines along with all training and evaluation scripts. Due to size constraints, large files such as datasets (TESS and other corpora), extracted features (MFCC/embeddings), and trained model (.pth) are not included in the repository.
 
 For full reproducibility, a Google Drive link is provided containing the complete datasets, extracted features, trained models, and all experimental outputs.
 
 The GitHub repo is lightweight and intended for easy setup and code review, while the Drive folder provides the complete working environment for training and evaluation.
+
+GOOGLE DRIVE: https://drive.google.com/drive/folders/1jg9rmWfqSjDZqyqGjRlOEZ5nCMjLOHyI?usp=sharing
+
