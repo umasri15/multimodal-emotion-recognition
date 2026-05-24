@@ -118,7 +118,7 @@ pip install -r requirements.txt
 
 ---
 
-# 🎙️ Speech Emotion Recognition
+# Speech Emotion Recognition
 
 ## Train Speech Model
 
@@ -134,7 +134,7 @@ python models/speech_pipeline/test.py
 
 ---
 
-# 📝 Text Emotion Recognition
+# Text Emotion Recognition
 
 ## Train Text Model
 
@@ -150,7 +150,7 @@ python models/text_pipeline/test.py
 
 ---
 
-# 🔀 Fusion Emotion Recognition
+# Fusion Emotion Recognition
 
 ## Train Fusion Model
 
@@ -172,7 +172,7 @@ python models/fusion_pipeline/test.py
 ```
 ---
 
-# 🎧 Speech Emotion Prediction (Inference)
+# Speech Emotion Prediction
 
 ```bash
 python predict_speech.py <path_to_audio_file.wav>
@@ -185,7 +185,7 @@ python predict_speech.py dataset/TESS/OAF_Happy/OAF_back_happy.wav
 
 ---
 
-# 📝 Text Emotion Prediction (Inference)
+# Text Emotion Prediction
 
 ```bash
 python predict_text.py "<text_input>"
@@ -198,7 +198,7 @@ python predict_text.py "I am very happy today"
 
 ---
 
-# 🔀 Multimodal Fusion Prediction (Speech + Text)
+# Multimodal Fusion Prediction
 
 ```bash
 python predict_fusion.py <path_to_audio_file.wav> "<text_input>"
@@ -209,7 +209,7 @@ python predict_fusion.py <path_to_audio_file.wav> "<text_input>"
 python predict_fusion.py dataset/TESS/OAF_Fear/OAF_bar_fear.wav "I am very scared"
 ```
 ---
-## 📊 Visualizations & Analysis
+## Visualizations & Analysis
 
 ### t-SNE Embeddings
 
@@ -234,7 +234,7 @@ python predict_fusion.py dataset/TESS/OAF_Fear/OAF_bar_fear.wav "I am very scare
 
 ![Performance Table](Results/tables/model_accuracy_table.png)
 
-# ⚠️ Important Notes 
+# Important Notes 
 
 ---
 
@@ -248,7 +248,7 @@ python -m models.text_pipeline.train
 python -m models.fusion_pipeline.train
 ```
 
-❗ This ensures Python treats folders as packages and avoids import errors.
+This ensures Python treats folders as packages and avoids import errors.
 
 ---
 
